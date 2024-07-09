@@ -48,6 +48,19 @@ ALLOWED_HOSTS = [
 ] + allowed_hosts_ports
 
 
+# Generate a list of trusted origins for CSRF for ports 8000 to 8009
+csrf_trusted_origins_ports = [f'https://{port}-' + base_url for port in range(8000, 8010)]
+
+CSRF_TRUSTED_ORIGINS = csrf_trusted_origins_ports
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+    ],
+}
+
+
 # Application definition
 
 INSTALLED_APPS = [
