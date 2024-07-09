@@ -11,6 +11,18 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
+import os
+
+if os.path.exists('env.py'):
+    import env
+
+CLOUDINARY_STORAGE = {
+    'CLOUDINARY_URL': os.environ.get('CLOUDINARY_URL')
+}
+
+MEDIA_URL = '/media/'
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,7 +37,15 @@ SECRET_KEY = 'django-insecure-!ocg0r*d)bbiq1^5u*+)is8us9@pk=pc3f##m^#hyjcm2i*w!j
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+# ALLOWED HOSTS
+base_url = 'jaqikal-newpixavibeapi-rz04y8o9w7i.ws.codeinstitute-ide.net'
+
+# Generate a list of allowed hosts for ports 8000 to 8009
+allowed_hosts_ports = [f'{port}-' + base_url for port in range(8000, 8010)]
+
+ALLOWED_HOSTS = [
+    os.environ.get('ALLOWED_HOST'),
+] + allowed_hosts_ports
 
 
 # Application definition
@@ -39,6 +59,8 @@ INSTALLED_APPS = [
     'cloudinary_storage',
     'django.contrib.staticfiles',
     'cloudinary',
+
+    'profiles',
 ]
 
 MIDDLEWARE = [
